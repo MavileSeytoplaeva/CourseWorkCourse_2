@@ -18,4 +18,7 @@ public class Consts {
     public static final Collection<Question> COLLECTION_FOR_RANDOM_1 = new HashSet<>(Set.of(
             new Question("when", "then")));
 
+    public static final Set<Question> QUESTION_SET = new HashSet<>(Set.of(
+            new Question("question", "answer")));
+
 }

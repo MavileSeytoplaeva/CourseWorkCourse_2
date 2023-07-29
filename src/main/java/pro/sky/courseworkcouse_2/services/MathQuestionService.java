@@ -5,38 +5,36 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pro.sky.courseworkcouse_2.interfaces.QuestionService;
 import pro.sky.courseworkcouse_2.models.Question;
-import pro.sky.courseworkcouse_2.repository.JavaQuestionRepository;
+import pro.sky.courseworkcouse_2.repository.MathQuestionRepository;
 
 import java.util.*;
 
 @Service
-@Component("javaService")
-public class JavaQuestionService implements QuestionService {
+@Component("mathService")
+public class MathQuestionService implements QuestionService {
 
-
-    private JavaQuestionRepository javaQuestionRepository;
+    private MathQuestionRepository mathQuestionRepository;
 
     private Random random = new Random();
 
-    public JavaQuestionService(@Qualifier("java") JavaQuestionRepository javaQuestionRepository) {
-        this.javaQuestionRepository = javaQuestionRepository;
-    }
-
     @Override
     public int getRandom() {
-
-        return random.nextInt(0, javaQuestionRepository.getQuestionStorage().size());
+        return random.nextInt(0, mathQuestionRepository.getQuestionStorage().size());
     }
 
+
+    public MathQuestionService(@Qualifier("math") MathQuestionRepository mathQuestionRepository) {
+        this.mathQuestionRepository = mathQuestionRepository;
+    }
 
     @Override
     public Question add(Question question) {
-        return javaQuestionRepository.add(question);
+        return mathQuestionRepository.add(question);
     }
 
     @Override
     public Question remove(Question question) {
-        return javaQuestionRepository.remove(question);
+        return mathQuestionRepository.remove(question);
     }
 
     @Override
@@ -46,12 +44,12 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Collection<Question> getAll() {
-        return javaQuestionRepository.getAll();
+        return mathQuestionRepository.getAll();
     }
 
     @Override
     public Question getRandomQuestion() {
-        List<Question> questionList = javaQuestionRepository.getQuestionStorage().stream().toList();
+        List<Question> questionList = mathQuestionRepository.getQuestionStorage().stream().toList();
         return questionList.get(getRandom());
     }
 }
