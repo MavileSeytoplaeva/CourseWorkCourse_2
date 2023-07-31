@@ -5,39 +5,42 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pro.sky.courseworkcouse_2.exceptions.MethodNotAllowedException;
 import pro.sky.courseworkcouse_2.interfaces.ExaminerService;
 import pro.sky.courseworkcouse_2.interfaces.QuestionService;
 import pro.sky.courseworkcouse_2.models.Question;
 
 import java.util.Collection;
-@RestController
-@RequestMapping("/exam/java")
-public class JavaQuestionController {
 
-    private final QuestionService javaQuestionService;
+@RestController
+@RequestMapping("/exam/math")
+public class MathQuestionController {
+
+    private final QuestionService mathQuestionService;
     private ExaminerService examinerService;
 
-    public JavaQuestionController(@Qualifier("javaService") QuestionService javaQuestionService, ExaminerService examinerService) {
-        this.javaQuestionService = javaQuestionService;
+    public MathQuestionController(@Qualifier("mathService") QuestionService mathQuestionService, ExaminerService examinerService) {
+        this.mathQuestionService = mathQuestionService;
         this.examinerService = examinerService;
     }
 
     @GetMapping()
     public Collection<Question> getQuestions() {
-        return javaQuestionService.getAll();
+        throw new MethodNotAllowedException();
     }
 
     @GetMapping("/add")
-    public Question addQuestion(@RequestParam("question") String question,
-                                @RequestParam("answer") String answer) {
-        return javaQuestionService.add(new Question(question,answer));
+    public Question addQuestion(@RequestParam String question,
+                                @RequestParam String answer) {
+        throw new MethodNotAllowedException();
     }
 
 
     @GetMapping("/remove")
-    public Question removeQuestion(@RequestParam("question") String question,
-                                   @RequestParam("answer") String answer) {
-
-        return javaQuestionService.remove(new Question(question, answer));
+    public Question removeQuestion(@RequestParam String question,
+                                   @RequestParam String answer) {
+        throw new MethodNotAllowedException();
     }
+
 }
+

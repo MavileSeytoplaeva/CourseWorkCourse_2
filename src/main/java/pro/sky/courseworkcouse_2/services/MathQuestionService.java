@@ -23,7 +23,7 @@ public class MathQuestionService implements QuestionService {
     }
 
 
-    public MathQuestionService(@Qualifier("math") MathQuestionRepository mathQuestionRepository) {
+    public MathQuestionService(@Qualifier("mathRepository") MathQuestionRepository mathQuestionRepository) {
         this.mathQuestionRepository = mathQuestionRepository;
     }
 
@@ -49,7 +49,9 @@ public class MathQuestionService implements QuestionService {
 
     @Override
     public Question getRandomQuestion() {
-        List<Question> questionList = mathQuestionRepository.getQuestionStorage().stream().toList();
-        return questionList.get(getRandom());
+        return mathQuestionRepository.getAll().stream()
+                .skip(random.nextInt(mathQuestionRepository.getAll().size()))
+                .findFirst()
+                .orElse(null);
     }
 }

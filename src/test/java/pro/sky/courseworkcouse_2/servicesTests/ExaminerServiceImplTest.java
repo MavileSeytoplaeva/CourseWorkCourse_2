@@ -26,21 +26,21 @@ import static org.mockito.Mockito.when;
 public class ExaminerServiceImplTest {
 
     @Mock
-    public JavaQuestionRepository javaQuestionRepository;
-    public JavaQuestionService javaQuestionService;
+    public JavaQuestionRepository javaQuestionRepository = new JavaQuestionRepository();
+    public JavaQuestionService javaQuestionService = new JavaQuestionService(javaQuestionRepository);
     public MathQuestionService mathQuestionService;
     public MathQuestionRepository mathQuestionRepository;
     public Random random = new Random();
 
     @InjectMocks
-    public ExaminerServiceImpl examinerService;
+    public ExaminerServiceImpl examinerService = new ExaminerServiceImpl(javaQuestionService,mathQuestionService);
 
-    @BeforeEach
-    void setUp() {
-        this.examinerService = new ExaminerServiceImpl(javaQuestionService, mathQuestionService);
-        this.javaQuestionService = new JavaQuestionService(javaQuestionRepository);
-        this.mathQuestionService = new MathQuestionService(mathQuestionRepository);
-    }
+//    @BeforeEach
+//    void setUp() {
+//        this.examinerService = new ExaminerServiceImpl(javaQuestionService, mathQuestionService);
+//        this.javaQuestionService = new JavaQuestionService(javaQuestionRepository);
+//        this.mathQuestionService = new MathQuestionService(mathQuestionRepository);
+//    }
 
 
 //    @Test
@@ -87,7 +87,6 @@ public class ExaminerServiceImplTest {
 
     @Test
     void shouldGetJavaQuestions() {
-        when(javaQuestionService.getRandom()).thenReturn(3);
         when(javaQuestionRepository.getAll()).thenReturn(Consts.QUESTION_COLLECTION);
         when(javaQuestionService.getRandomQuestion()).thenReturn(new Question(Consts.QUESTION, Consts.ANSWER));
 
