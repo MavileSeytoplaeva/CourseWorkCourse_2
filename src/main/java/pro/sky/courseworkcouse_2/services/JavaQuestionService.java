@@ -54,7 +54,7 @@ public class JavaQuestionService implements QuestionService {
 //        List<Question> questionList = javaQuestionRepository.getAll().stream().toList();
 //        return questionList.get(getRandom());
         if (javaQuestionRepository.getAll().isEmpty()) {
-            throw new StorageIsEmptyException("Empty");
+            throw new StorageIsEmptyException();
         }
         return javaQuestionRepository.getAll().stream()
                 .skip(random.nextInt(javaQuestionRepository.getAll().size()))

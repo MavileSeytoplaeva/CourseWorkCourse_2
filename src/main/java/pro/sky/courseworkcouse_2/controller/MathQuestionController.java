@@ -26,13 +26,15 @@ public class MathQuestionController {
 
     @GetMapping()
     public Collection<Question> getQuestions() {
-        throw new MethodNotAllowedException();
+        return mathQuestionService.getAll();
+//        throw new MethodNotAllowedException();
     }
 
     @GetMapping("/add")
     public Question addQuestion(@RequestParam String question,
                                 @RequestParam String answer) {
-        throw new MethodNotAllowedException();
+        return mathQuestionService.add(new Question(question, answer));
+//        throw new MethodNotAllowedException();
     }
 
 

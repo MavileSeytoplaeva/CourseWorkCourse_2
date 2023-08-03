@@ -34,25 +34,20 @@ public class ExaminerServiceImpl implements ExaminerService {
 //    }
 
     @Override
-    public Collection<Question> getJavaQuestions() {
-        return Stream.generate(fields.get("java")::getRandomQuestion)
+    public Collection<Question> getQuestions(int amount) {
+        if ((fields.get("math").getAll().size() + fields.get("java").getAll().size()) > amount) {
+            throw new NotEnoughQuestionsException();
+        }
+        int mathQuestions = random.nextInt(amount);
+        int javaQuestions = amount-mathQuestions;
+        List<Question> questionsList = new ArrayList<>(Stream.generate(fields.get("java")::getRandomQuestion)
                 .distinct()
-                .limit(random.nextInt(fields.get("java").getAll().size()))
-                .collect(Collectors.toList());
-//        return Stream.generate(javaQuestionService::getRandomQuestion)
-//                .distinct()
-//                .limit(random.nextInt(javaQuestionService.getAll().size()))
-//                .collect(Collectors.toList());
-    }
-    @Override
-    public Collection<Question> getMathQuestions() {
-        return Stream.generate(fields.get("math")::getRandomQuestion)
+                .limit(javaQuestions)
+                .toList());
+        questionsList.addAll(Stream.generate(fields.get("math")::getRandomQuestion)
                 .distinct()
-                .limit(random.nextInt(fields.get("math").getAll().size()))
-                .collect(Collectors.toList());
-//        return Stream.generate(mathQuestionService::getRandomQuestion)
-//                .distinct()
-//                .limit(random.nextInt(mathQuestionService.getAll().size()))
-//                .collect(Collectors.toList());
+                .limit(mathQuestions)
+                .toList());
+        return questionsList;
     }
 }

@@ -19,9 +19,9 @@ public class ExamController {
         this.examinerService = examinerService;
     }
 
-    @GetMapping("/get")
-    public Collection<Question> getQuestions() {
-        return examinerService.getJavaQuestions();
+    @GetMapping("/get/{amount}")
+    public Collection<Question> getQuestions(@PathVariable int amount) {
+        return examinerService.getQuestions(amount);
     }
 }
 
