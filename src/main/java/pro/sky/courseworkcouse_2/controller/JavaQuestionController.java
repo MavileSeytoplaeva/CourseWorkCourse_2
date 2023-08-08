@@ -1,10 +1,7 @@
 package pro.sky.courseworkcouse_2.controller;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pro.sky.courseworkcouse_2.interfaces.ExaminerService;
 import pro.sky.courseworkcouse_2.interfaces.QuestionService;
 import pro.sky.courseworkcouse_2.models.Question;
@@ -27,9 +24,9 @@ public class JavaQuestionController {
         return javaQuestionService.getAll();
     }
 
-    @GetMapping("/add")
-    public Question addQuestion(@RequestParam("question") String question,
-                                @RequestParam("answer") String answer) {
+    @PostMapping("/add")
+    public Question addQuestion(@RequestParam String question,
+                                @RequestParam String answer) {
         return javaQuestionService.add(new Question(question,answer));
     }
 

@@ -35,10 +35,10 @@ public class ExaminerServiceImpl implements ExaminerService {
 
     @Override
     public Collection<Question> getQuestions(int amount) {
-        if ((fields.get("math").getAll().size() + fields.get("java").getAll().size()) > amount) {
+        if ((fields.get("math").getAll().size() + fields.get("java").getAll().size()) < amount) {
             throw new NotEnoughQuestionsException();
         }
-        int mathQuestions = random.nextInt(amount);
+        int mathQuestions = random.nextInt(fields.get("math").getAll().size());
         int javaQuestions = amount-mathQuestions;
         List<Question> questionsList = new ArrayList<>(Stream.generate(fields.get("java")::getRandomQuestion)
                 .distinct()
