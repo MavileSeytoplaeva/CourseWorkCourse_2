@@ -33,21 +33,24 @@ public class ExaminerServiceImpl implements ExaminerService {
 //        this.mathQuestionService = mathQuestionService;
 //    }
 
+    private QuestionService getService(int num) {
+        if (num == 1) {
+            return fields.get("java");
+        }
+        return fields.get("math");
+    }
+
     @Override
     public Collection<Question> getQuestions(int amount) {
         if ((fields.get("math").getAll().size() + fields.get("java").getAll().size()) < amount) {
             throw new NotEnoughQuestionsException();
         }
-        int mathQuestions = random.nextInt(fields.get("math").getAll().size());
-        int javaQuestions = amount-mathQuestions;
-        List<Question> questionsList = new ArrayList<>(Stream.generate(fields.get("java")::getRandomQuestion)
-                .distinct()
-                .limit(javaQuestions)
-                .toList());
-        questionsList.addAll(Stream.generate(fields.get("math")::getRandomQuestion)
-                .distinct()
-                .limit(mathQuestions)
-                .toList());
-        return questionsList;
+        Set<Question> questions = new HashSet<>(Set.of());
+        while (amount >= questions.size()) {
+            QuestionService question = getService(random.nextInt(1));
+            questions.add(question.getRandomQuestion());
+        }
+        return questions;
     }
 }
+
