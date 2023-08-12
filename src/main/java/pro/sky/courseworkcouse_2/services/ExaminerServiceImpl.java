@@ -46,8 +46,8 @@ public class ExaminerServiceImpl implements ExaminerService {
             throw new NotEnoughQuestionsException();
         }
         Set<Question> questions = new HashSet<>(Set.of());
-        while (amount >= questions.size()) {
-            QuestionService question = getService(random.nextInt(1));
+        while (amount > questions.size()) {
+            QuestionService question = getService(random.nextInt(2));
             questions.add(question.getRandomQuestion());
         }
         return questions;
