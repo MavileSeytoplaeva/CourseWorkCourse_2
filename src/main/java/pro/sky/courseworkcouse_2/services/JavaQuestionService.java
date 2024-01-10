@@ -3,6 +3,7 @@ package pro.sky.courseworkcouse_2.services;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import pro.sky.courseworkcouse_2.exceptions.StorageIsEmptyException;
 import pro.sky.courseworkcouse_2.interfaces.QuestionService;
 import pro.sky.courseworkcouse_2.models.Question;
 import pro.sky.courseworkcouse_2.repository.JavaQuestionRepository;
@@ -18,14 +19,13 @@ public class JavaQuestionService implements QuestionService {
 
     private Random random = new Random();
 
-    public JavaQuestionService(@Qualifier("java") JavaQuestionRepository javaQuestionRepository) {
+    public JavaQuestionService(@Qualifier("javaRepository") JavaQuestionRepository javaQuestionRepository) {
         this.javaQuestionRepository = javaQuestionRepository;
     }
 
     @Override
     public int getRandom() {
-
-        return random.nextInt(0, javaQuestionRepository.getQuestionStorage().size());
+        return random.nextInt(javaQuestionRepository.getAll().size()+1);
     }
 
 
@@ -51,7 +51,14 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Question getRandomQuestion() {
-        List<Question> questionList = javaQuestionRepository.getQuestionStorage().stream().toList();
-        return questionList.get(getRandom());
+//        List<Question> questionList = javaQuestionRepository.getAll().stream().toList();
+//        return questionList.get(getRandom());
+        if (javaQuestionRepository.getAll().isEmpty()) {
+            throw new StorageIsEmptyException();
+        }
+        return javaQuestionRepository.getAll().stream()
+                .skip(random.nextInt(javaQuestionRepository.getAll().size()))
+                .findFirst()
+                .orElse(null);
     }
 }

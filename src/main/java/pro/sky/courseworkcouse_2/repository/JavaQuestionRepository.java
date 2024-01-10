@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 @Repository
-@Component("java")
+@Component("javaRepository")
 public class JavaQuestionRepository implements QuestionRepository{
 
     private Set<Question> questionStorage;

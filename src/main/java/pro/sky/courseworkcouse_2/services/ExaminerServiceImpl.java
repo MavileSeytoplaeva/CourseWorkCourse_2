@@ -7,50 +7,50 @@ import pro.sky.courseworkcouse_2.interfaces.ExaminerService;
 import pro.sky.courseworkcouse_2.interfaces.QuestionService;
 import pro.sky.courseworkcouse_2.models.Question;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ExaminerServiceImpl implements ExaminerService {
 
     private Random random = new Random();
 
-    QuestionService javaQuestionService;
-    QuestionService mathQuestionService;
+    private Map<String, QuestionService> fields = new HashMap<>();
 
     public ExaminerServiceImpl(@Qualifier("javaService") QuestionService javaQuestionService,
                                @Qualifier("mathService") QuestionService mathQuestionService) {
-        this.javaQuestionService = javaQuestionService;
-        this.mathQuestionService = mathQuestionService;
+        fields.put("java", javaQuestionService);
+        fields.put("math", mathQuestionService);
+    }
+
+//    QuestionService javaQuestionService;
+//    QuestionService mathQuestionService;
+//
+//    public ExaminerServiceImpl(@Qualifier("javaService") QuestionService javaQuestionService,
+//                               @Qualifier("mathService") QuestionService mathQuestionService) {
+//        this.javaQuestionService = javaQuestionService;
+//        this.mathQuestionService = mathQuestionService;
+//    }
+
+    private QuestionService getService(int num) {
+        if (num == 1) {
+            return fields.get("java");
+        }
+        return fields.get("math");
     }
 
     @Override
-    public Collection<Question> getJavaQuestions() {
-        Set<Question> questionsSet = new HashSet<>();
-        int random = javaQuestionService.getRandom();
-        if (random <= javaQuestionService.getAll().size()) {
-            while (questionsSet.size() < random) {
-                questionsSet.add(javaQuestionService.getRandomQuestion());
-            }
-        } else {
+    public Collection<Question> getQuestions(int amount) {
+        if ((fields.get("math").getAll().size() + fields.get("java").getAll().size()) < amount) {
             throw new NotEnoughQuestionsException();
         }
-        return questionsSet;
-    }
-    @Override
-    public Collection<Question> getMathQuestions() {
-        Set<Question> questionsSet = new HashSet<>();
-        int random = mathQuestionService.getRandom();
-        if (random <= mathQuestionService.getAll().size()) {
-            while (questionsSet.size() < random) {
-                questionsSet.add(mathQuestionService.getRandomQuestion());
-            }
-        } else {
-            throw new NotEnoughQuestionsException();
+        Set<Question> questions = new HashSet<>(Set.of());
+        while (amount > questions.size()) {
+            QuestionService question = getService(random.nextInt(2));
+            questions.add(question.getRandomQuestion());
         }
-        return questionsSet;
+        return questions;
     }
-
 }
+
